@@ -1,4 +1,5 @@
 .spinner {
+  margin: 23vh auto;
   height: 150px;
   width: 150px;
   background-image: url(../../images/spinner-loading.gif);

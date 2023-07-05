@@ -3,6 +3,8 @@
 /*PAGE & FONTS*/
 @import url(../blocks/page/page.css);
 @import url(../vendor/fonts/fonts.css);
+/*SPINNER*/
+@import url(../blocks/spinner/spinner.css);
 /*HEADER*/
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);

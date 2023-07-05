@@ -8,6 +8,8 @@ function Main ({ onEditProfile, onEditAvatar, onAddCard, onDeleteCard, onClickCa
   const userData = useContext(CurrentUserContext)
 
   return (
+    isLoading ? <Spinner/> : 
+
     <main className="content">
       <section className="profile">
         <div className="profile__avatar-block" onClick={onEditAvatar}>
@@ -23,7 +25,7 @@ function Main ({ onEditProfile, onEditAvatar, onAddCard, onDeleteCard, onClickCa
         <button type="button" className="profile__add-button" onClick={onAddCard}></button>
       </section>
       <section className="elements">
-        {isLoading ? <Spinner/> : cards.map(cardData => (
+        {cards.map(cardData => (
             <Card 
               key={cardData._id}
               card={cardData}
