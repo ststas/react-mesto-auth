@@ -1,12 +1,15 @@
 .header {
   grid-area: header;
-  display: grid;
-  grid-template-columns: 1fr;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   width: 320px;
   height: 56px;
   margin: 28px auto 0;
   box-sizing: border-box;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  overflow-y: hidden;
 }
 
 @media screen and (min-width: 768px) {

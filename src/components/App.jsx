@@ -1,4 +1,5 @@
 import api from '../utils/api'
+import * as auth from '../utils/auth';
 import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'
@@ -7,8 +8,13 @@ import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import DeleteCardPopup from './DeleteCardPopup'
 import ImagePopup from './ImagePopup'
+import ProtectedRoute from "./ProtectedRoute"
+import Login from "./Login"
+import Register from "./Register"
 import { useState, useEffect, useCallback } from 'react'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
+import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
+
 
 function App() {
 //устанавливаем стейты
@@ -22,6 +28,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
+
+  
 //ФУНКЦИИ ОТКРЫТИЯ ПОПАПОВ
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -82,12 +91,15 @@ function App() {
       .catch(err => console.error(`Ошибка добавления/удаления лайка карточки: ${err}`)) 
   }
 // функция удаления карточки
-  async function handleDeleteCard(card) {
-    await api.removeCard(card._id)
+  function handleDeleteCard(card) {
+    setIsLoading(true)
+    api.removeCard(card._id)
       .then(() => {
         setCards((state) => state.filter((currentCard) => currentCard._id !== card._id))
+        closeAllPopups()
       })
       .catch(err => console.error(`Ошибка удаления карточки: ${err}`))
+      .finally(() => setIsLoading(false))
   }
 // функция обновления данных профиля
   function handleUpdateUser(userData) {
@@ -123,7 +135,8 @@ function App() {
       .finally(() => setIsLoading(false))
   }
 // загрузка данных с сервера
-  useEffect(() => {
+  useEffect(() => { 
+    isLoggedIn ??
     setIsLoading(true)
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([userData, cardsData]) => {
@@ -133,24 +146,65 @@ function App() {
     })
     .catch(err => console.error(`Ошибка загрузки данных с сервера: ${err}`))
   },[])
-//возвращаем разметку Main и попапы
+// функция регистрации нового пользователя
+
+  function handleRegister({email, password}) {
+    console.log(email)
+    console.log(password)
+
+  }
+
+// функция авторизации
+function handleLogin({email, password}) {
+  console.log(email)
+  console.log(password)
+}
+
+// возвращаем разметку Main и попапы
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header/>
-
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onEditAvatar={handleEditAvatarClick}
-          onAddCard={handleAddNewPlaceClick}
-          onDeleteCard={handleDeleteNewPlaceClick}
-          onClickCard={handleCardClick}
-          onLikeCard={handleCardLike}
-          cards={cards}
-          isLoading={isLoading}
-        />
-
-        <Footer/>
+        <Header isLoggedIn={isLoggedIn}/>
+        
+        <Routes>
+        
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute 
+                element={Main}
+                onEditProfile={handleEditProfileClick}
+                onEditAvatar={handleEditAvatarClick}
+                onAddCard={handleAddNewPlaceClick}
+                onDeleteCard={handleDeleteNewPlaceClick}
+                onClickCard={handleCardClick}
+                onLikeCard={handleCardLike}
+                cards={cards}
+                isLoading={isLoading}
+                isLoggedIn={isLoggedIn}
+              />
+            }
+          />
+          <Route 
+            path="/signin"
+            element={
+              <Login
+                onLogin={handleLogin}
+                buttonText={"Войти"}
+              />
+            }
+          />
+          <Route 
+            path="/signup"
+            element={
+              <Register
+                onRegister={handleRegister}
+                buttonText={"Зарегистрироваться"}
+              />
+            }
+          />
+        </Routes>
+        {isLoggedIn && <Footer/>}
         
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -178,6 +232,7 @@ function App() {
           onClose={closeAllPopups}
           onDeleteCard={handleDeleteCard}
           cardToDelete={cardToDelete}
+          isLoading={isLoading}
         />
         
         <ImagePopup

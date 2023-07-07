@@ -12,9 +12,11 @@
   display: grid;
   grid-template-areas:
   "header"
+  "auth"
   "profile"
   "elements"
   "footer";
   justify-content: center;
   align-content: start;
+  transition: 0.4s;
 }
