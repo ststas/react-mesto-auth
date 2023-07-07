@@ -11,6 +11,7 @@ import ImagePopup from './ImagePopup'
 import ProtectedRoute from "./ProtectedRoute"
 import Login from "./Login"
 import Register from "./Register"
+import InfoTooltip from "./InfoTooltip";
 import { useState, useEffect, useCallback } from 'react'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
@@ -28,6 +29,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
+
   const [isLoggedIn, setIsLoggedIn] = useState(true)
 
   
@@ -137,15 +140,19 @@ function App() {
 // загрузка данных с сервера
   useEffect(() => { 
     isLoggedIn ??
-    setIsLoading(true)
+    setIsFetching(true)
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([userData, cardsData]) => {
       setCurrentUser(userData)
       setCards(cardsData)
-      setIsLoading(false)
+      setIsFetching(false)
     })
     .catch(err => console.error(`Ошибка загрузки данных с сервера: ${err}`))
-  },[])
+  },[isLoggedIn])
+
+  console.log(isLoggedIn)
+
+  
 // функция регистрации нового пользователя
 
   function handleRegister({email, password}) {
@@ -180,7 +187,7 @@ function handleLogin({email, password}) {
                 onClickCard={handleCardClick}
                 onLikeCard={handleCardLike}
                 cards={cards}
-                isLoading={isLoading}
+                isFetching={isFetching}
                 isLoggedIn={isLoggedIn}
               />
             }
