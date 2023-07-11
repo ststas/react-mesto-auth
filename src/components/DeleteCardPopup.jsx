@@ -1,18 +1,6 @@
 import PopupWithForm from './PopupWithForm'
 
 function DeleteCardPopup ({ isOpen, onClose, onDeleteCard, cardToDelete, isLoading }) {
-  // const [buttonText, setButtonText] = useState('Да')
-
-// async function handleSubmit() {
-//   setButtonText('Удаляем...')
-//     try {
-//       await onDeleteCard(cardToDelete)
-//     } 
-//     finally {
-//       onClose()
-//       setButtonText('Да')
-//     }
-//   } 
 
   function handleSubmit() {
     onDeleteCard(cardToDelete)

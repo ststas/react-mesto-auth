@@ -1,16 +1,15 @@
 import FormValidation from './Hooks/FormValidation'
 
-function Login ({buttonText}){
+function Login ({onLogin, isLoading }){
   const {values, errors, isValid, handleChange, resetForm }  = FormValidation()
   const {email, password} = values
 
   function handleSubmit(event){
     event.preventDefault()
-
+    onLogin(email, password)
     resetForm()
-
   }
-
+  
   return (
     <div className="auth">
       <h2 className="auth__title">Вход</h2>
@@ -35,7 +34,7 @@ function Login ({buttonText}){
         onChange={handleChange} 
       />
       <span className={`auth__error ${errors.password  && 'auth__error_visible'}`}>{errors.password }</span>
-      <button type="submit" className={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}>{buttonText}</button> 
+      <button type="submit" className={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}>{isLoading ? 'Вход...' : 'Войти'}</button> 
       </form>
     </div>
   )

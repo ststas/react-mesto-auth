@@ -1,5 +1,5 @@
 import api from '../utils/api'
-import * as auth from '../utils/auth';
+import * as auth from '../utils/auth'
 import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'
@@ -8,32 +8,33 @@ import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import DeleteCardPopup from './DeleteCardPopup'
 import ImagePopup from './ImagePopup'
-import ProtectedRoute from "./ProtectedRoute"
 import Login from "./Login"
 import Register from "./Register"
-import InfoTooltip from "./InfoTooltip";
-import { useState, useEffect, useCallback } from 'react'
+import InfoTooltip from "./InfoTooltip"
+import ProtectedRoute from "./ProtectedRoute"
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
-import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
-
+import { useState, useEffect, useCallback } from 'react'
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom'
 
 function App() {
-//устанавливаем стейты
+//устанавливаем стейты и определяем константы
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false)
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false)
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false)
   const [selectedCard, setSelectedCard] = useState(null)
   const [cardToDelete, setCardToDelete] = useState(null)
   const [currentUser, setCurrentUser] = useState({})
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') || false)
+  const [isLogSuccessful, setIsLogSuccessful] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+  const navigate = useNavigate()
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
-
-  
 //ФУНКЦИИ ОТКРЫТИЯ ПОПАПОВ
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -57,6 +58,10 @@ function App() {
     setSelectedCard(card)
     handleAddListener()
   }
+  function handleInfoToolClick () {
+    setIsInfoPopupOpen(true)
+    handleAddListener()
+  }
 //ФУНКЦИИ ЗАКРЫТИЯ ПОПАПОВ
 //функция установки стейта для попапов
   const setAllPopupsStates = useCallback(()=> {
@@ -65,6 +70,7 @@ function App() {
     setIsAddPlacePopupOpen(false)
     setIsDeleteCardPopupOpen(false)
     setIsImagePopupOpen(false)
+    setIsInfoPopupOpen(false)
     setSelectedCard(null)
     setCardToDelete(null)
 }, [])
@@ -139,42 +145,84 @@ function App() {
   }
 // загрузка данных с сервера
   useEffect(() => { 
-    isLoggedIn ??
-    setIsFetching(true)
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-    .then(([userData, cardsData]) => {
-      setCurrentUser(userData)
-      setCards(cardsData)
-      setIsFetching(false)
-    })
-    .catch(err => console.error(`Ошибка загрузки данных с сервера: ${err}`))
-  },[isLoggedIn])
-
-  console.log(isLoggedIn)
-
-  
+    if (isLoggedIn) {
+      setIsFetching(true)
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([userData, cardsData]) => {
+        setCurrentUser(userData)
+        setCards(cardsData)
+        setIsFetching(false)
+      })
+      .catch(err => console.error(`Ошибка загрузки данных с сервера: ${err}`))
+  }},[isLoggedIn])  
 // функция регистрации нового пользователя
-
-  function handleRegister({email, password}) {
-    console.log(email)
-    console.log(password)
-
+  function handleRegister(email, password) {
+    setIsLoading(true)
+    auth.register(email, password)
+    .then(() => {
+      setIsLogSuccessful(true)
+      handleInfoToolClick()
+      navigate('/signin', {replace: true})
+    })
+    .catch(err => {
+      handleInfoToolClick()
+      console.error(`Ошибка регистрации пользователя: ${err}`)
+    })
+    .finally(() => {setIsLoading(false)})
   }
-
 // функция авторизации
-function handleLogin({email, password}) {
-  console.log(email)
-  console.log(password)
-}
+  function handleLogin (email, password) {
+    setIsLoading(true)
+    auth.authorize(email, password)
+    .then((res) => {
+      localStorage.setItem("jwt", res.token);
+      localStorage.setItem("isLoggedIn", true);
+      setUserEmail(email)
+      setIsLoggedIn(true)
+      navigate('/', {replace: true})
+    }
+    )
+    .catch(err => {
+      setIsLogSuccessful(false)
+      handleInfoToolClick()
+      console.error(`Ошибка авторизации пользователя: ${err}`)
+    })
+    .finally(() => setIsLoading(false))
+  }
+// функция выхода из профиля
+  function handleSignOut () {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false)
+    setUserEmail('')
+    navigate('/signin', {replace: true})
+  }
+// функции проверки наличия токена  
+  const handleTokenCheck = useCallback(()=>{
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      auth.checkToken(jwt)
+      .then((res) => {
+        setUserEmail(res.data.email)
+        setIsLoggedIn(true)
+        navigate('/', {replace: true})
+      })
+      .catch(err => console.error(`Ошибка авторизации пользователя: ${err}`))
+    }
+  }, [setUserEmail, setIsLoggedIn, navigate])
 
-// возвращаем разметку Main и попапы
+  useEffect(() => {
+    handleTokenCheck();
+  },[handleTokenCheck])
+
+// возвращаем разметку
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header isLoggedIn={isLoggedIn}/>
+
+        <Header isLoggedIn={isLoggedIn} onSignOut={handleSignOut} userEmail={userEmail}/>
         
         <Routes>
-        
           <Route 
             path="/" 
             element={
@@ -197,7 +245,7 @@ function handleLogin({email, password}) {
             element={
               <Login
                 onLogin={handleLogin}
-                buttonText={"Войти"}
+                isLoading={isLoading}
               />
             }
           />
@@ -206,11 +254,18 @@ function handleLogin({email, password}) {
             element={
               <Register
                 onRegister={handleRegister}
-                buttonText={"Зарегистрироваться"}
+                isLoading={isLoading}
               />
             }
           />
+          <Route
+            path="*"
+            element={
+              isLoggedIn ? <Navigate to="/" replace /> : <Navigate to="/signin" replace />
+            }
+          />
         </Routes>
+
         {isLoggedIn && <Footer/>}
         
         <EditProfilePopup
@@ -243,11 +298,19 @@ function handleLogin({email, password}) {
         />
         
         <ImagePopup
-        name='picture'
-        card={selectedCard}
-        isOpen={isImagePopupOpen}
-        onClose={closeAllPopups}
+          name='picture'
+          card={selectedCard}
+          isOpen={isImagePopupOpen}
+          onClose={closeAllPopups}
         />
+
+        <InfoTooltip
+          name='info-tooltip'
+          isOpen={isInfoPopupOpen}
+          onClose={closeAllPopups}
+          isLogSuccessful={isLogSuccessful}
+        />
+
       </div>
     </CurrentUserContext.Provider>  
   );

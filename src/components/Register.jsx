@@ -1,16 +1,15 @@
 import FormValidation from './Hooks/FormValidation'
 import { Link } from "react-router-dom";
 
-function Register ({ buttonText }){
+function Register ({ onRegister, isLoading }){
 
   const {values, errors, isValid, handleChange, resetForm }  = FormValidation()
   const {email, password} = values
-
+  
   function handleSubmit(event){
     event.preventDefault()
-    
+    onRegister(email, password)
     resetForm()
-
   }
 
   return (
@@ -37,7 +36,7 @@ function Register ({ buttonText }){
         onChange={handleChange} 
       />
       <span className={`auth__error ${errors.password  && 'auth__error_visible'}`}>{errors.password }</span>
-      <button type="submit" className={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}>{buttonText}</button>
+      <button type="submit" className={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}>{isLoading ? 'Регистрируем...' : 'Регистрация'}</button>
       <Link to="/signin" className="auth__link">Уже зарегистрированы? Войти</Link>
       </form>
     </div>

@@ -3,12 +3,12 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import Card from './Card'
 import Spinner from './Spinner/Spinner'
 
-function Main ({ onEditProfile, onEditAvatar, onAddCard, onDeleteCard, onClickCard, onLikeCard, cards, isLoading }) {
+function Main ({ onEditProfile, onEditAvatar, onAddCard, onDeleteCard, onClickCard, onLikeCard, cards, isFetching }) {
   
   const userData = useContext(CurrentUserContext)
 
   return (
-    isLoading ? <Spinner/> : 
+    isFetching ? <Spinner/> : 
 
     <main className="content">
       <section className="profile">
