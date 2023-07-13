@@ -1,13 +1,12 @@
-import FormValidation from './Hooks/FormValidation'
+import useFormValidation from '../hooks/useFormValidation'
 
-function Login ({onLogin, isLoading }){
-  const {values, errors, isValid, handleChange, resetForm }  = FormValidation()
-  const {email, password} = values
+function Login ({ onLogin, isLoading }){
+  const { values, errors, isValid, handleChange, resetForm }  = useFormValidation()
+  const { email, password } = values
 
-  function handleSubmit(event){
+  function handleSubmit(event) {
     event.preventDefault()
-    onLogin(email, password)
-    resetForm()
+    onLogin(email, password, resetForm)
   }
   
   return (

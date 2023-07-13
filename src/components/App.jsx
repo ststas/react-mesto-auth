@@ -3,14 +3,14 @@ import * as auth from '../utils/auth'
 import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'
-import EditProfilePopup from './EditProfilePopup'
-import EditAvatarPopup from './EditAvatarPopup'
-import AddPlacePopup from './AddPlacePopup'
-import DeleteCardPopup from './DeleteCardPopup'
-import ImagePopup from './ImagePopup'
+import EditProfilePopup from './Popup/EditProfilePopup'
+import EditAvatarPopup from './Popup/EditAvatarPopup'
+import AddPlacePopup from './Popup/AddPlacePopup'
+import DeleteCardPopup from './Popup/DeleteCardPopup'
+import ImagePopup from './Popup/ImagePopup'
 import Login from "./Login"
 import Register from "./Register"
-import InfoTooltip from "./InfoTooltip"
+import InfoTooltip from "./Popup/InfoTooltip"
 import ProtectedRoute from "./ProtectedRoute"
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import { useState, useEffect, useCallback } from 'react'
@@ -31,39 +31,34 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') || false)
-  const [isLogSuccessful, setIsLogSuccessful] = useState('')
+  const [isLogSuccessful, setIsLogSuccessful] = useState(null)
   const [userEmail, setUserEmail] = useState('')
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false)
   const navigate = useNavigate()
 
 //ФУНКЦИИ ОТКРЫТИЯ ПОПАПОВ
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
-    handleAddListener()
   }
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
-    handleAddListener()
   }
   function handleAddNewPlaceClick() {
     setIsAddPlacePopupOpen(true)
-    handleAddListener()
   }
   function handleDeleteNewPlaceClick(card) {
     setCardToDelete(card)
     setIsDeleteCardPopupOpen(true)
-    handleAddListener()
   }
   function handleCardClick(card) {
-    setIsImagePopupOpen(true)
     setSelectedCard(card)
-    handleAddListener()
+    setIsImagePopupOpen(true)
   }
-  function handleInfoToolClick () {
+  function openInfoToolTip () {
     setIsInfoPopupOpen(true)
-    handleAddListener()
   }
-//ФУНКЦИИ ЗАКРЫТИЯ ПОПАПОВ
-//функция установки стейта для попапов
+//ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ
+//обработчик стейтов попапов
   const setAllPopupsStates = useCallback(()=> {
     setIsEditProfilePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
@@ -74,22 +69,11 @@ function App() {
     setSelectedCard(null)
     setCardToDelete(null)
 }, [])
-//функции закрытия попапа при нажатии на ESC 
-  const handleCloseOnEsc = useCallback((event) => {
-      if (event.key === 'Escape') {
-        setAllPopupsStates()   
-        document.removeEventListener('keydown', handleCloseOnEsc)
-      }
-  }, [setAllPopupsStates])
-//функции закрытия попапов
-  const closeAllPopups = useCallback(() => {
-    setAllPopupsStates()
-    document.removeEventListener('keydown', handleCloseOnEsc)
-  },[setAllPopupsStates, handleCloseOnEsc])
-//функция установки слушалтеля
-  function handleAddListener() {
-    document.addEventListener('keydown', handleCloseOnEsc)
-  }  
+//функция вызова обработчика стейтов попапов
+  const closeAllPopups = useCallback(() => { 
+    setAllPopupsStates() 
+  },[setAllPopupsStates])
+
 // функция лайка карточки
   function handleCardLike(card) {
     const isLiked = card.likes.some(like => like._id === currentUser._id);
@@ -99,50 +83,50 @@ function App() {
       })
       .catch(err => console.error(`Ошибка добавления/удаления лайка карточки: ${err}`)) 
   }
+
+  // универсальная функция сабмита
+  function handleSubmit(request) {
+    setIsLoading(true);
+    request()
+      .then(closeAllPopups)
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  }  
 // функция удаления карточки
   function handleDeleteCard(card) {
-    setIsLoading(true)
-    api.removeCard(card._id)
-      .then(() => {
-        setCards((state) => state.filter((currentCard) => currentCard._id !== card._id))
-        closeAllPopups()
-      })
-      .catch(err => console.error(`Ошибка удаления карточки: ${err}`))
-      .finally(() => setIsLoading(false))
+    function makeRequest() {
+      return api.removeCard(card._id).then(() => {
+        setCards((state) => state.filter((currentCard) => currentCard._id !== card._id))})
+    }
+    handleSubmit(makeRequest)
   }
 // функция обновления данных профиля
   function handleUpdateUser(userData) {
-    setIsLoading(true)
-    api.setUserInfo(userData)
-      .then((updatedUserData) => {
-        setCurrentUser(updatedUserData)
-        closeAllPopups()
-      })
-      .catch(err => console.error(`Ошибка редактирования профиля: ${err}`))
-      .finally(() => setIsLoading(false))
-  }
+    function makeRequest() {
+      return api.setUserInfo(userData).then((updatedUserData) => {setCurrentUser(updatedUserData)})
+    }
+    handleSubmit(makeRequest)
+  }  
 // функция обновления аватара
   function handleUpdateAvatar(userData) {
-    setIsLoading(true)
-    api.setUserAvatar(userData)
-      .then((updatedUserData) => {
-        setCurrentUser(updatedUserData)
-        closeAllPopups()
-      })
-      .catch((err) => console.error(`Ошибка редактирования аватара профиля: ${err}`))
-      .finally(() => setIsLoading(false))
+    function makeRequest() {
+      return api.setUserAvatar(userData).then((updatedUserData) => {setCurrentUser(updatedUserData)})
+    }
+    handleSubmit(makeRequest)
   }
 // функция создания новой карточки
   function handleAddPlaceSubmit (cardData) {
-    setIsLoading(true)
-    api.addCard(cardData)
-      .then((newCard) => {
-        setCards([newCard, ...cards])
-        closeAllPopups()
-      })
-      .catch((err) => console.error(`Ошибка добавления карточки: ${err}`))
-      .finally(() => setIsLoading(false))
+    function makeRequest() {
+      return api.addCard(cardData).then((newCard) => {setCards([newCard, ...cards])})
+    }
+    handleSubmit(makeRequest)
   }
+
+// функция обработки клика по "бургеру"
+  function handleBurgerClick() {
+    isBurgerOpen ? setIsBurgerOpen(false) : setIsBurgerOpen(true)
+  }  
+
 // загрузка данных с сервера
   useEffect(() => { 
     if (isLoggedIn) {
@@ -156,22 +140,22 @@ function App() {
       .catch(err => console.error(`Ошибка загрузки данных с сервера: ${err}`))
   }},[isLoggedIn])  
 // функция регистрации нового пользователя
-  function handleRegister(email, password) {
+  function handleRegister(email, password, resetForm) {
     setIsLoading(true)
     auth.register(email, password)
     .then(() => {
       setIsLogSuccessful(true)
-      handleInfoToolClick()
       navigate('/signin', {replace: true})
+      resetForm()
     })
-    .catch(err => {
-      handleInfoToolClick()
-      console.error(`Ошибка регистрации пользователя: ${err}`)
+    .catch(err => {console.error(`Ошибка регистрации пользователя: ${err}`)})
+    .finally(() => {
+      openInfoToolTip()
+      setIsLoading(false)
     })
-    .finally(() => {setIsLoading(false)})
   }
 // функция авторизации
-  function handleLogin (email, password) {
+  function handleLogin (email, password, resetForm) {
     setIsLoading(true)
     auth.authorize(email, password)
     .then((res) => {
@@ -180,11 +164,12 @@ function App() {
       setUserEmail(email)
       setIsLoggedIn(true)
       navigate('/', {replace: true})
+      resetForm()
     }
     )
     .catch(err => {
       setIsLogSuccessful(false)
-      handleInfoToolClick()
+      openInfoToolTip()
       console.error(`Ошибка авторизации пользователя: ${err}`)
     })
     .finally(() => setIsLoading(false))
@@ -196,6 +181,7 @@ function App() {
     setIsLoggedIn(false)
     setUserEmail('')
     navigate('/signin', {replace: true})
+    setIsBurgerOpen(false)
   }
 // функции проверки наличия токена  
   const handleTokenCheck = useCallback(()=>{
@@ -218,9 +204,15 @@ function App() {
 // возвращаем разметку
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
+      <div className={`page ${isBurgerOpen ? 'page_clicked': '' }`}>
 
-        <Header isLoggedIn={isLoggedIn} onSignOut={handleSignOut} userEmail={userEmail}/>
+        <Header 
+          isLoggedIn={isLoggedIn} 
+          onSignOut={handleSignOut} 
+          userEmail={userEmail}
+          isBurgerOpen={isBurgerOpen}
+          onBurgerClick={handleBurgerClick}
+        />
         
         <Routes>
           <Route 

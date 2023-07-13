@@ -1,17 +1,16 @@
-import FormValidation from './Hooks/FormValidation'
+import useFormValidation from '../hooks/useFormValidation'
 import { Link } from "react-router-dom";
 
 function Register ({ onRegister, isLoading }){
 
-  const {values, errors, isValid, handleChange, resetForm }  = FormValidation()
-  const {email, password} = values
+  const { values, errors, isValid, handleChange, resetForm }  = useFormValidation()
+  const { email, password } = values
   
-  function handleSubmit(event){
+  function handleSubmit(event) {
     event.preventDefault()
-    onRegister(email, password)
-    resetForm()
+    onRegister(email, password, resetForm)
   }
-
+  
   return (
     <div className="auth">
       <h2 className="auth__title">Регистрация</h2>

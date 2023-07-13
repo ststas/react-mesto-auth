@@ -1,12 +1,14 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
-
-
+// функция получения ответа и преобразования его в объект
 function getRes(res) {
   return (res.ok ? res.json() : Promise.reject(`Error: ${res.status}`))
 }
-
+// функция отправки fetch запроса
+function request(url, options) {
+  return fetch(`https://auth.nomoreparties.co/${url}`, options).then(getRes)
+}
+// функция отправки данных для регистрации пользователя
 export const register = (email, password) => {
-  return fetch(`${BASE_URL}/signup`, {
+  return request(`signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -14,13 +16,10 @@ export const register = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then((res) => {
-    return getRes(res);
-  })
-};
-
+}
+// функция отправки данных для авторизации пользователя
 export const authorize = (email, password) => {
-  return fetch(`${BASE_URL}/signin`, {
+  return request(`signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -28,11 +27,10 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then(res => getRes(res))
-};
-
+}
+// функция отправки данных для проверки валидности токена
 export const checkToken = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
+  return request(`users/me`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -40,5 +38,4 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then(res => getRes(res))
 }
