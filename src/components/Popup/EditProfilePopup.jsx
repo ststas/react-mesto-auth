@@ -33,25 +33,27 @@ function EditProfilePopup ({ isOpen, onClose, onUpdateUser, isLoading }) {
         type={'text'}
         name={'name'}
         placeHolder={'Ваше имя'}
-        inputClass={''}
+        inputClassName={`popup__field ${errors.name && 'popup__field_type_error'}`}
         required={true}
         minLength={'2'}
         maxLength={'40'}
         value={name}
         onChange={handleChange}
         error={errors.name}
+        spanClassName={'popup__error'}
       />
       <Input
         type={'text'}
         name={'about'}
         placeHolder={'Ваша профессия'}
-        inputClass={''}
+        inputClassName={`popup__field ${errors.about && 'popup__field_type_error'}`}
         required={true}
         minLength={'2'}
         maxLength={'200'}
         value={about}
         onChange={handleChange}
-        error={errors.name}
+        error={errors.about}
+        spanClassName={'popup__error'}
       />
     </PopupWithForm>
   )

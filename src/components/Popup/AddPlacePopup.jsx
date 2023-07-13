@@ -30,25 +30,27 @@ function AddPlacePopup ({ isOpen, onClose, onAddPlace, isLoading }) {
         type={'text'}
         name={'name'}
         placeHolder={'Название'}
-        inputClass={''}
+        inputClassName={`popup__field ${errors.name && 'popup__field_type_error'}`}
         required={true}
         minLength={'2'}
         maxLength={'30'}
         value={name}
         onChange={handleChange}
         error={errors.name}
+        spanClassName={'popup__error'}
       />
       <Input
         type={'url'}
         name={'link'}
         placeHolder={'Ссылка на картинку'}
-        inputClass={''}
+        inputClassName={`popup__field ${errors.link && 'popup__field_type_error'}`}
         required={true}
         minLength={''}
         maxLength={''}
         value={link}
         onChange={handleChange}
         error={errors.link}
+        spanClassName={'popup__error'}
       />
     </PopupWithForm>
   )

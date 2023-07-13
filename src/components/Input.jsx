@@ -6,14 +6,14 @@ function Input (props){
         type={props.type}
         name={props.name}
         placeholder={props.placeHolder} 
-        className={`popup__field ${props.inputClass} ${props.error && 'popup__field_type_error'}`}
+        className={props.inputClassName}
         required={props.required}
         minLength={props.minLength} 
         maxLength={props.maxLength}
         value={props.value ?? ''}
         onChange={props.onChange} 
       />
-      <span className={`popup__error ${props.error && 'popup__error_visible'}`}>{props.error}</span>
+      <span className={`${props.spanClassName} ${props.error && `${props.spanClassName}_visible`}`}>{props.error}</span>
     </>
   )
 }

@@ -10,7 +10,13 @@ function PopupWithForm ({ name, title, buttonText, isOpen, onClose, onSubmit, is
   return (
     <Popup isOpen={isOpen} name={name} onClose={onClose}>
         <h2 className="popup__title">{title}</h2>
-        <Form name={name} buttonText={buttonText} onSubmit={onSubmit} isValid={isValid}>
+        <Form 
+          name={name} 
+          formClassName={'popup__form'}
+          onSubmit={onSubmit}
+          submitButtonClassName={`popup__submit-button ${!isValid && 'popup__submit-button_disabled'}`}
+          buttonText={buttonText} 
+        >
           {children}
         </Form>
     </Popup>

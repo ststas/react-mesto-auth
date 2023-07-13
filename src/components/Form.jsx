@@ -1,4 +1,4 @@
-function Form ({name, buttonText, onSubmit, isValid, children}) {
+function Form ({name, formClassName, onSubmit, buttonText, submitButtonClassName, children}) {
 
   function handleSubmit (event) {
     event.preventDefault()
@@ -6,9 +6,9 @@ function Form ({name, buttonText, onSubmit, isValid, children}) {
   }
   
   return (
-    <form name={name} className="popup__form" noValidate="" onSubmit={handleSubmit}>
+    <form name={name} className={formClassName} noValidate="" onSubmit={handleSubmit}>
       {children}
-      <button type="submit" className={`popup__submit-button ${!isValid && 'popup__submit-button_disabled'}`}>
+      <button type="submit" className={submitButtonClassName}>
         {buttonText}
       </button> 
     </form>

@@ -1,4 +1,6 @@
 import useFormValidation from '../hooks/useFormValidation'
+import Form from './Form'
+import Input from './Input'
 import { Link } from "react-router-dom";
 
 function Register ({ onRegister, isLoading }){
@@ -6,38 +8,48 @@ function Register ({ onRegister, isLoading }){
   const { values, errors, isValid, handleChange, resetForm }  = useFormValidation()
   const { email, password } = values
   
-  function handleSubmit(event) {
-    event.preventDefault()
+  function handleSubmit() {
     onRegister(email, password, resetForm)
   }
   
   return (
     <div className="auth">
       <h2 className="auth__title">Регистрация</h2>
-      <form name="register" className="auth__form" onSubmit={handleSubmit}>
-      <input 
-        type="email" 
-        name="email" 
-        placeholder="Email" 
-        className="auth__field"
-        required
-        value={email ?? ''} 
-        onChange={handleChange} 
-      />
-      <span className={`auth__error ${errors.email && 'auth__error_visible'}`}>{errors.email}</span>
-      <input 
-        type="password" 
-        name="password" 
-        placeholder="Пароль" 
-        className="auth__field"
-        required
-        value={password ?? ''} 
-        onChange={handleChange} 
-      />
-      <span className={`auth__error ${errors.password  && 'auth__error_visible'}`}>{errors.password }</span>
-      <button type="submit" className={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}>{isLoading ? 'Регистрируем...' : 'Регистрация'}</button>
-      <Link to="/signin" className="auth__link">Уже зарегистрированы? Войти</Link>
-      </form>
+      <Form 
+        name={'login'} 
+        formClassName={'auth__form'}
+        onSubmit={handleSubmit}
+        submitButtonClassName={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}
+        buttonText={`${isLoading ? 'Вход...' : 'Войти'}`} 
+      >
+        <Input 
+          type={'email'}
+          name={'email'}
+          placeHolder={'Email'}
+          inputClassName={'auth__field'}
+          required={true}
+          minLength={''}
+          maxLength={''}
+          value={email}
+          onChange={handleChange}
+          error={errors.email}
+          spanClassName={'auth__error'}
+        />
+        <Input 
+          type={'password'}
+          name={'password'}
+          placeHolder={'Пароль'}
+          inputClassName={'auth__field'}
+          required={true}
+          minLength={''}
+          maxLength={''}
+          value={password}
+          onChange={handleChange}
+          error={errors.password}
+          spanClassName={'auth__error'}
+        />
+        <Link to="/signin" className="auth__link">Уже зарегистрированы? Войти</Link>
+      </Form>  
     </div>
   )
 

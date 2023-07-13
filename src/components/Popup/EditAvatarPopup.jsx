@@ -27,16 +27,16 @@ function EditAvatarPopup ({ isOpen, onClose, onUpdateAvatar, isLoading }) {
     >
       <Input 
         type={'url'}
-        id={'avatar'}
         name={'avatar'}
         placeHolder={'Ссылка на картинку'}
-        inputClass={'popup__field_margin_top'}
+        inputClassName={`popup__field popup__field_margin_top ${errors.avatar && 'popup__field_type_error'}`}
         required={true}
         minLength={''}
         maxLength={''}
         value={avatar}
         onChange={handleChange}
         error={errors.avatar}
+        spanClassName={'popup__error'}
       />
     </PopupWithForm>
   )
