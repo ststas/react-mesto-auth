@@ -13,7 +13,6 @@ function Input (props){
         value={props.value ?? ''}
         onChange={props.onChange} 
       />
-      <span className={`${props.spanClassName} ${props.error && `${props.spanClassName}_visible`}`}>{props.error}</span>
     </>
   )
 }

@@ -35,9 +35,8 @@ function EditAvatarPopup ({ isOpen, onClose, onUpdateAvatar, isLoading }) {
         maxLength={''}
         value={avatar}
         onChange={handleChange}
-        error={errors.avatar}
-        spanClassName={'popup__error'}
       />
+      <span className={`popup__error ${errors.avatar && `popup__error_visible`}`}>{errors.avatar}</span>
     </PopupWithForm>
   )
 }

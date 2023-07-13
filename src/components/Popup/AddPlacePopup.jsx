@@ -36,9 +36,9 @@ function AddPlacePopup ({ isOpen, onClose, onAddPlace, isLoading }) {
         maxLength={'30'}
         value={name}
         onChange={handleChange}
-        error={errors.name}
         spanClassName={'popup__error'}
       />
+      <span className={`popup__error ${errors.name && `popup__error_visible`}`}>{errors.name}</span>
       <Input
         type={'url'}
         name={'link'}
@@ -49,9 +49,9 @@ function AddPlacePopup ({ isOpen, onClose, onAddPlace, isLoading }) {
         maxLength={''}
         value={link}
         onChange={handleChange}
-        error={errors.link}
         spanClassName={'popup__error'}
       />
+      <span className={`popup__error ${errors.link && `popup__error_visible`}`}>{errors.link}</span>
     </PopupWithForm>
   )
 }

@@ -30,9 +30,8 @@ function Login ({ onLogin, isLoading }){
           maxLength={''}
           value={email}
           onChange={handleChange}
-          error={errors.email}
-          spanClassName={'auth__error'}
         />
+        <span className={`auth__error ${errors.email && `auth__error_visible`}`}>{errors.email}</span>
         <Input 
           type={'password'}
           name={'password'}
@@ -43,9 +42,8 @@ function Login ({ onLogin, isLoading }){
           maxLength={''}
           value={password}
           onChange={handleChange}
-          error={errors.password}
-          spanClassName={'auth__error'}
         />
+        <span className={`auth__error ${errors.password && `auth__error_visible`}`}>{errors.password}</span>
       </Form>
     </div> 
   )
