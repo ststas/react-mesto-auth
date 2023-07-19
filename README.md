@@ -1,3 +1,17 @@
+# Project: Mesto
+
+## Description.
+ Added user's authorization and authentification. Updated "Form" and "Inputs" elements.
+ In this work was used REACT framework.
+
+### https://ststas.github.io/projects/mestoreact
+
+## Plans:  
+* Continue to update current project using React.
+
+### Stanislav Zaitsev х Yandex Practicum 
+
+
 # Проект: Место
 
 ## Сдача проекта "Место". Описание.
