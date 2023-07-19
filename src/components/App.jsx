@@ -200,7 +200,7 @@ function App() {
   useEffect(() => {
     handleTokenCheck();
   },[handleTokenCheck])
-
+  
 // возвращаем разметку
   return (
     <CurrentUserContext.Provider value={currentUser}>
