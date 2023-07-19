@@ -9,10 +9,10 @@ function InfoTooltip ({ name, isOpen, onClose, isLogSuccessful }) {
         <img 
           src={isLogSuccessful ? unionTrue : unionFalse} 
           className="popup__image popup__image_type_info"
-          alt={isLogSuccessful ? 'Картинка с галочкой' : 'Картинка с крестиком'}
+          alt={isLogSuccessful ? 'picture with success sign' : 'picture with unsuccess sign'}
         />
         <h2 className="popup__title popup__title_type_info">
-          {isLogSuccessful ? 'Вы успешно \n зарегистрировались!' : 'Что-то пошло не так! \n Попробуйте ещё раз.'}
+          {isLogSuccessful ? 'You have successfully \n signed up!' : 'Something went wrong! \n Please, try again.'}
         </h2>
     </Popup>
   )

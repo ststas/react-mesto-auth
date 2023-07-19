@@ -12,13 +12,13 @@ function Login ({ onLogin, isLoading }){
 
   return (
     <div className="auth">
-      <h2 className="auth__title">Вход</h2>
+      <h2 className="auth__title">Sign in</h2>
       <Form 
         name={'login'} 
         formClassName={'auth__form'}
         onSubmit={handleSubmit}
         submitButtonClassName={`auth__submit-button ${!isValid && 'auth__submit-button_disabled'}`}
-        buttonText={`${isLoading ? 'Вход...' : 'Войти'}`} 
+        buttonText={`${isLoading ? 'Signing in...' : 'Sign in'}`} 
       >
         <Input 
           type={'email'}
@@ -35,7 +35,7 @@ function Login ({ onLogin, isLoading }){
         <Input 
           type={'password'}
           name={'password'}
-          placeHolder={'Пароль'}
+          placeHolder={'Password'}
           inputClassName={'auth__field'}
           required={true}
           minLength={''}

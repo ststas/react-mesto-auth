@@ -9,8 +9,8 @@ function DeleteCardPopup ({ isOpen, onClose, onDeleteCard, cardToDelete, isLoadi
   return (  
     <PopupWithForm 
       name='newplace-delete'
-      title='Вы уверены?'
-      buttonText={isLoading ? 'Удаляем...' : 'Да'}
+      title='Are you sure?'
+      buttonText={isLoading ? 'Deleting...' : 'Delete'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

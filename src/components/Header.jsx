@@ -4,7 +4,7 @@ function Header ({ isLoggedIn, onSignOut, userEmail, isBurgerOpen, onBurgerClick
   const location = useLocation();
 
   const linkPath = (location.pathname === '/signin') ? '/signup' : '/signin';
-  const linkText = (location.pathname === '/signin') ? 'Регистрация' : 'Войти';
+  const linkText = (location.pathname === '/signin') ? 'Sign up' : 'Sign in';
 
   return (
     <header className="header">  
@@ -17,7 +17,7 @@ function Header ({ isLoggedIn, onSignOut, userEmail, isBurgerOpen, onBurgerClick
             </div>
             <div className="header__nav">
               <p className="header__nav-email">{userEmail}</p>
-              <button className="header__button-logout" onClick={onSignOut}>Выйти</button> 
+              <button className="header__button-logout" onClick={onSignOut}>Sign out</button> 
             </div>
           </>
           ) 

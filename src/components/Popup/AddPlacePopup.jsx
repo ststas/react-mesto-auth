@@ -19,8 +19,8 @@ function AddPlacePopup ({ isOpen, onClose, onAddPlace, isLoading }) {
   return (  
     <PopupWithForm 
       name='newplace'   
-      title='Новое место'
-      buttonText={isLoading ? 'Создаем...' : 'Создать'}
+      title='New place adding'
+      buttonText={isLoading ? 'Adding...' : 'Add'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -29,7 +29,7 @@ function AddPlacePopup ({ isOpen, onClose, onAddPlace, isLoading }) {
       <Input
         type={'text'}
         name={'name'}
-        placeHolder={'Название'}
+        placeHolder={'New place name'}
         inputClassName={`popup__field ${errors.name && 'popup__field_type_error'}`}
         required={true}
         minLength={'2'}
@@ -42,7 +42,7 @@ function AddPlacePopup ({ isOpen, onClose, onAddPlace, isLoading }) {
       <Input
         type={'url'}
         name={'link'}
-        placeHolder={'Ссылка на картинку'}
+        placeHolder={'Image link'}
         inputClassName={`popup__field ${errors.link && 'popup__field_type_error'}`}
         required={true}
         minLength={''}

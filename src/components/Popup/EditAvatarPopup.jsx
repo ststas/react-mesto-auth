@@ -18,8 +18,8 @@ function EditAvatarPopup ({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   return (  
     <PopupWithForm 
       name='profile-avatar'
-      title='Обновить аватар'
-      buttonText={isLoading ? 'Сохранение...' : 'Сохранить'}
+      title='Avatar update'
+      buttonText={isLoading ? 'Updating...' : 'Update'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -28,7 +28,7 @@ function EditAvatarPopup ({ isOpen, onClose, onUpdateAvatar, isLoading }) {
       <Input 
         type={'url'}
         name={'avatar'}
-        placeHolder={'Ссылка на картинку'}
+        placeHolder={'Image link'}
         inputClassName={`popup__field popup__field_margin_top ${errors.avatar && 'popup__field_type_error'}`}
         required={true}
         minLength={''}
