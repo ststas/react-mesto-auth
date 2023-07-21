@@ -1,8 +1,10 @@
 .header__selector {
+  appearance: none;
+  display: flex;
   padding: 0;
   margin: 0 0 18px 0;
   color: #FFF;
-  background: transparent;
+  background-color: transparent;
   text-align: center;
   font-size: 18px;
   font-style: normal;
@@ -10,6 +12,14 @@
   line-height: normal;
   box-sizing: border-box;
   border: none;
+  box-shadow: none;
+  background-clip: padding-box;
+}
+
+.header__selector:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
 }
 
 @media screen and (min-width: 768px) {
