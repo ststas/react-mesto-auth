@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MySelect = ({options, defaultValue, value, onChange}) => {
+const MySelector = ({value, onChange, selectorClassName, defaultValue, options} ) => {
 
   function handleChange(event) {
     const currentOption = event.target.childNodes[event.target.selectedIndex]
@@ -13,12 +13,7 @@ const MySelect = ({options, defaultValue, value, onChange}) => {
       <select 
         value={value}
         onChange={handleChange}
-        style={{
-          background: 'transparent',
-          color: 'white', margin: '15px',
-          fontSize: '18px',
-          fontWeight:'normal'
-        }}
+        className={selectorClassName}
       >
         <option disabled value="">{defaultValue}</option>
         {options.map(option => 
@@ -31,4 +26,4 @@ const MySelect = ({options, defaultValue, value, onChange}) => {
   );
 };
 
-export default MySelect;
+export default MySelector;

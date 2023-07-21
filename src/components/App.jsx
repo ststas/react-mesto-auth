@@ -12,7 +12,7 @@ import Login from "./Login"
 import Register from "./Register"
 import InfoTooltip from "./Popup/InfoTooltip"
 import ProtectedRoute from "./ProtectedRoute"
-import MySelect from './MySelect'
+import MySelector from './MySelect'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom'
@@ -35,8 +35,6 @@ function App() {
   const [isLogSuccessful, setIsLogSuccessful] = useState(null)
   const [userEmail, setUserEmail] = useState('')
   const [isBurgerOpen, setIsBurgerOpen] = useState(false)
-  const [selectedSort, setSelectedSort] = useState('')
-  const [direction, setDirection] = useState('asc')
   const navigate = useNavigate()
   
 
@@ -234,10 +232,11 @@ function App() {
           isBurgerOpen={isBurgerOpen}
           onBurgerClick={handleBurgerClick}
         >
-          <MySelect
-            value={selectedSort}
+          <MySelector
+            value=''
             onChange={sortedCards}
             defaultValue='Sort by name'
+            selectorClassName={'header__selector'}
             options={[
               { value: 'name', name: 'AZ' },
               { value: 'name', name: 'ZA' },
