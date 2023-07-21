@@ -12,6 +12,7 @@ import Login from "./Login"
 import Register from "./Register"
 import InfoTooltip from "./Popup/InfoTooltip"
 import ProtectedRoute from "./ProtectedRoute"
+import MySelect from './MySelect'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom'
@@ -34,7 +35,10 @@ function App() {
   const [isLogSuccessful, setIsLogSuccessful] = useState(null)
   const [userEmail, setUserEmail] = useState('')
   const [isBurgerOpen, setIsBurgerOpen] = useState(false)
+  const [selectedSort, setSelectedSort] = useState('')
+  const [direction, setDirection] = useState('asc')
   const navigate = useNavigate()
+  
 
 //ФУНКЦИИ ОТКРЫТИЯ ПОПАПОВ
   function handleEditProfileClick() {
@@ -200,7 +204,24 @@ function App() {
   useEffect(() => {
     handleTokenCheck();
   },[handleTokenCheck])
-  
+
+  // сортировка массива карточек по имени
+  function sortedCards (sortOption, direction) {
+    const newCards = [...cards].sort((a, b) => {
+      if(direction === 'AZ'){
+        if(a[sortOption].toLowerCase() > b[sortOption].toLowerCase()) {return 1}
+        if(a[sortOption].toLowerCase() < b[sortOption].toLowerCase()) {return -1}
+        return 0
+      }
+      if(direction === 'ZA') {
+        if(a[sortOption].toLowerCase() > b[sortOption].toLowerCase()) {return -1}
+        if(a[sortOption].toLowerCase() < b[sortOption].toLowerCase()) {return 1}
+        return 0
+      }
+    })
+    setCards(newCards)
+  }
+
 // возвращаем разметку
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -212,8 +233,17 @@ function App() {
           userEmail={userEmail}
           isBurgerOpen={isBurgerOpen}
           onBurgerClick={handleBurgerClick}
-        />
-        
+        >
+          <MySelect
+            value={selectedSort}
+            onChange={sortedCards}
+            defaultValue='Sort by name'
+            options={[
+              { value: 'name', name: 'AZ' },
+              { value: 'name', name: 'ZA' },
+            ]}
+          />
+        </Header>        
         <Routes>
           <Route 
             path="/" 

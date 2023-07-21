@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-function Header ({ isLoggedIn, onSignOut, userEmail, isBurgerOpen, onBurgerClick }) {
+function Header ({ isLoggedIn, onSignOut, userEmail, isBurgerOpen, onBurgerClick, children }) {
   const location = useLocation();
 
   const linkPath = (location.pathname === '/signin') ? '/signup' : '/signin';
@@ -16,6 +16,7 @@ function Header ({ isLoggedIn, onSignOut, userEmail, isBurgerOpen, onBurgerClick
               <div className={`header__nav-button ${isBurgerOpen ? 'header__nav-button_clicked': '' }`} ></div>
             </div>
             <div className="header__nav">
+              {children}
               <p className="header__nav-email">{userEmail}</p>
               <button className="header__button-logout" onClick={onSignOut}>Sign out</button> 
             </div>
