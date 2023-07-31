@@ -35,6 +35,7 @@ function App() {
   const [isLogSuccessful, setIsLogSuccessful] = useState(null)
   const [userEmail, setUserEmail] = useState('')
   const [isBurgerOpen, setIsBurgerOpen] = useState(false)
+  const [selectedSort, setSelectedSort] = useState('')
   const navigate = useNavigate()
   
 
@@ -205,19 +206,22 @@ function App() {
 
   // сортировка массива карточек по имени
   function sortedCards (sortOption, direction) {
-    const newCards = [...cards].sort((a, b) => {
-      if(direction === 'AZ'){
-        if(a[sortOption].toLowerCase() > b[sortOption].toLowerCase()) {return 1}
-        if(a[sortOption].toLowerCase() < b[sortOption].toLowerCase()) {return -1}
-        return 0
-      }
-      if(direction === 'ZA') {
-        if(a[sortOption].toLowerCase() > b[sortOption].toLowerCase()) {return -1}
-        if(a[sortOption].toLowerCase() < b[sortOption].toLowerCase()) {return 1}
-        return 0
-      }
-    })
-    setCards(newCards)
+    setSelectedSort(sortOption)
+    console.log(selectedSort)
+
+    // const newCards = [...cards].sort((a, b) => {
+    //   if(direction === 'AZ'){
+    //     if(a[sortOption].toLowerCase() > b[sortOption].toLowerCase()) {return 1}
+    //     if(a[sortOption].toLowerCase() < b[sortOption].toLowerCase()) {return -1}
+    //     return 0
+    //   }
+    //   if(direction === 'ZA') {
+    //     if(a[sortOption].toLowerCase() > b[sortOption].toLowerCase()) {return -1}
+    //     if(a[sortOption].toLowerCase() < b[sortOption].toLowerCase()) {return 1}
+    //     return 0
+    //   }
+    // })
+    // setCards(newCards)
   }
 
 // возвращаем разметку
@@ -233,13 +237,13 @@ function App() {
           onBurgerClick={handleBurgerClick}
         >
           <MySelector
-            value=''
+            value={selectedSort}
             onChange={sortedCards}
             defaultValue='Sort by name'
             selectorClassName={'header__selector'}
             options={[
               { value: 'name', name: 'AZ' },
-              { value: 'name', name: 'ZA' },
+              { value: 'name1', name: 'ZA' },
             ]}
           />
         </Header>        

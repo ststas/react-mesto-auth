@@ -12,7 +12,9 @@ const MySelector = ({value, onChange, selectorClassName, defaultValue, options} 
     <div>
       <select 
         value={value}
-        onChange={handleChange}
+        // onChange={handleChange}
+        onChange={event =>onChange(event.target.value)}
+
         className={selectorClassName}
       >
         <option disabled value="">{defaultValue}</option>
