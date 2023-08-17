@@ -2,25 +2,25 @@
 
 ## Description.
  Added user's authorization and authentification. Updated "Form" and "Inputs" elements.
- In this work was used REACT framework.
+ This project uses REACT framework, as well as JSX and JWT for authorization.
 
 ### https://ststas.github.io/projects/mestoreact
 
 ## Plans:  
-* Continue to update current project using React.
+* Continue to update current project using React. Add card's searh & sort.
 
 ### Stanislav Zaitsev х Yandex Practicum 
 
 
 # Проект: Место
 
-## Сдача проекта "Место". Описание.
- Проектная работа 12 направлена на внедрение авторизации пользователя.
- В работе были использованы технологии: HTML, CSS. JavaScript, React.
+## Проект "Место". Описание.
+ Добавлена регистрация и автризация пользователей.
+ В работе были использованы технологии: React, JSX, JWT.
 
-### https://ststas.github.io
+### https://ststas.github.io/projects/mestoreact
 
 ## Планы по доработке:  
-* Продолжить изучение React.
+* Добавить сортировку и поиск карточек.
 
 ### Станислав Зайцев х Yandex Practicum 
