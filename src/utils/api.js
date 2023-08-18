@@ -3,6 +3,7 @@ class Api {
     this._apiUrl = data.apiUrl;
     this._headers = data.headers
   }
+
   // функция получения ответа и преобразования его в объект
   _getRes(res) {
     return (res.ok ? res.json() : Promise.reject(`Error: ${res.status}`))

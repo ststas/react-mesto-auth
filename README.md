@@ -24,7 +24,7 @@
 * please SIGN UP to explore the app. You can use fictional email & password to authorize.
 
 ## Web version
-* https://ststas.github.io/projects/littlefatboy
+* https://ststas.github.io/projects/mestoreact
 
 ### Stanislav Zaitsev х Yandex Practicum 
 
