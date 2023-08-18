@@ -16,7 +16,7 @@
 * to improve JWT & REST API using skills
 
 ## Plans for developing
-* to connect with backend part built on Node.js.
+* to implement backend part built on Node.js.
 
 ## To run
 * download repository and install React.js and the rest of dependencies stated on package.json.
