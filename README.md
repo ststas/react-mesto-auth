@@ -1,6 +1,6 @@
 # PROJECT MESTO REACT AUTH
 
-## Description
+## Description & Functionality
 * Refactored project Mesto JavaScript with React.js.
 * Added JSON Web Token authentication to keep authorized user logged in.
 * "Form" and "Input" elements updated as universal. 
@@ -31,7 +31,7 @@
 
 # ПРОЕКТ MESTO REACT AUTH
 
-## Описание
+## Описание и функциональность
 * Произведен рафакторинг проекта Mesto JavaScript с использованием React.js.
 * Добавлена авторизация/аутентификация пользователя с использованием JSON Web Token.
 * Элементы "Form" and "Input" сделаны универсальными. 
