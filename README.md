@@ -15,7 +15,7 @@
 * to improve React.js & Single Pages Application building skills.
 * to improve JWT & REST API using skills
 
-## Plans for developing:  
+## Plans for developing
 * to connect with backend part built on Node.js.
 
 ## To run
@@ -38,6 +38,13 @@
 * Добавлена сортировка постов по имени (см. ветку "feature/sorting").
 * Добавлено "бургер" меню для мобильной версии.
 * Проект протестирован и работает браузерах на основе WebKit and Chromium.
+
+## Стек и инструменты
+* React.js, HTML, CSS, REST API, JWT, Nested-BEM.
+
+## Цель
+* прокачать навыки по работе с React.js и создании Single Pages Application.
+* прокачать навыки по работе с JWT & REST API.
 
 ## Планы по доработке:  
 * соединить c backend блоком, написанным на Node.js.
