@@ -20,7 +20,7 @@
 
 ## To run
 * download repository and install React.js and the rest of dependencies stated on package.json.
-* use NPM START to run the app.
+* use `NPM START` to run the app.
 * please SIGN UP to explore the app. You can use fictional email & password to authorize.
 
 ## Web version
@@ -51,8 +51,8 @@
 
 ## Для запуска
 * скачайте репозиторий и установите React.js, а также остальные зависимости, указаннные в файле package.json.
-* наберите NPM START для запуска приложения.
-* Пожалуйста, зарегмстрируйтесь, чтобы использовать приложение. Для регистрации можно использовать вымышленные почту и пароль.
+* наберите `NPM START` для запуска приложения.
+* Пожалуйста, зарегистрируйтесь, чтобы использовать приложение. Для регистрации можно использовать вымышленные почту и пароль.
 
 ## Развернутая версия
 * https://ststas.github.io/projects/mestoreact
